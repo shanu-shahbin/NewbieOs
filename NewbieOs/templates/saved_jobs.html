@@ -1,0 +1,71 @@
+{% extends "partials/base.html" %}
+
+{% block title %}My Saved Jobs{% endblock %}
+
+{% block content %}
+<main>
+    <div class="saved-jobs-container">
+        <h1 style="text-align: center; margin-top: 20px;">My Saved Jobs</h1>
+        
+        {% if saved_jobs %}
+        <div class="job-listing-container">
+            {% for saved_job in saved_jobs %}
+            <div class="job-card">
+                <a href="{% url 'job_details' saved_job.job.id %}" class="job-details" style="text-decoration: none; color: inherit;">
+                    <div>
+                        <div class="job-header">
+                            <span class="experience-level">Exp: {{ saved_job.job.experience_level }}</span>
+                            <span class="job-title">{{ saved_job.job.job_title }} - {{ saved_job.job.company.name }}</span>
+                            <span class="post-date">Posted on: {{ saved_job.job.job_posted_date|date:"d/m/Y" }}</span>
+                        </div>
+                        <div class="skills">
+                            {% if saved_job.job.skill1 %}<span>{{ saved_job.job.skill1 }}</span>{% endif %}
+                            {% if saved_job.job.skill2 %}<span>{{ saved_job.job.skill2 }}</span>{% endif %}
+                            {% if saved_job.job.skill3 %}<span>{{ saved_job.job.skill3 }}</span>{% endif %}
+                            {% if saved_job.job.skill4 %}<span>{{ saved_job.job.skill4 }}</span>{% endif %}
+                        </div>
+                    </div>
+                </a>
+
+                <div class="job-meta">
+                    <p class="location">{{ saved_job.job.company.location }}</p>
+                    <button type="button" class="remove-button" onclick="removeSavedJob({{ saved_job.id }})">Remove</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align: center; margin-top: 20px;">You have no saved jobs.</p>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function removeSavedJob(savedJobId) {
+        $.ajax({
+            type: "POST",
+            url: "{% url 'remove_saved_job' %}",  // Ensure 'remove_saved_job' URL is defined in urls.py
+            data: {
+                'saved_job_id': savedJobId,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    alert(response.message);
+                    // Reload the page or remove the job from the DOM
+                    location.reload();
+                } else {
+                    alert('An error occurred. Please try again.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    }
+</script>
+{% endblock %}
