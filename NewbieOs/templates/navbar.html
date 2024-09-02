@@ -1,0 +1,66 @@
+{% load static %}
+<nav class="navbar">
+    <div class="menu-icon">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-microsoft" viewBox="0 0 16 16">
+            <path d="M7.462 0H0v7.19h7.462zM16 0H8.538v7.19H16zM7.462 8.211H0V16h7.462zm8.538 0H8.538V16H16z"/>
+        </svg></a>
+    </div>
+    <div class="logo">
+        <a href="{% url 'index' %}"><img src="{% static 'images/newbie-logo.jpeg' %}" class="logo-image" alt="logo-image"> NewbieOs</a>
+    </div>
+    <div class="nav-links">
+        <a href="#">Companies</a>
+        <a href="#">Hire <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-plus-fill" viewBox="0 0 16 16">
+            <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0"/>
+        </svg></a>
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle">ATS Resume</a>
+            <div class="dropdown-menu">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle">Free Course</a>
+            <div class="dropdown-menu">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle">Dev Tools</a>
+            <div class="dropdown-menu">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </div>
+        <a href="#">Help</a>
+    </div>
+
+    <div class="icons">
+        <a href="#" class="search-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg></a>
+        <a href="#" class="notification-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/></svg>
+            <div class="popup-window">
+                <h3>Notifications</h3>
+                <div class="notification-text">
+                    <p>New note published on AWS Cloud!</p>
+                    <p>10 new job postings for Python Developer in Bengaluru location.</p>
+                </div>
+            </div>
+        </a>
+            {% if profile.profilepic %}            
+                <a href="#">
+                    <img src="{{ profile.profilepic.url }}" alt="User" class="user-image">
+                </a>
+            {% else %}
+                <a href="#">
+                    <img src="{% static 'images/navbar-user_logo.jpg' %}" alt="User" class="user-image">
+                </a>
+            {% endif %}
+    </div>
+</nav>
