@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NewbieOs{% endblock %}</title>
+
+    <!-- css pages -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/companies.css' %}">
+
+
+    {% block extra_head %}     {% endblock %}
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    {% block style %}
+    <!-- Default or additional styles can be defined here -->
+    {% endblock %}
+    
+    <div class="main">
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+    {% include 'footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Script for toggling navigation menu and popup window -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuIcon = document.querySelector('.menu-icon a');
+        const navLinks = document.querySelector('.nav-links');
+        const mainContent = document.querySelector('.main-content');
+
+        // Toggle the navigation menu
+        menuIcon.addEventListener('click', (event) => {
+            event.preventDefault();  // Prevent default anchor behavior
+            navLinks.classList.toggle('show');
+            mainContent.classList.toggle('hidden');
+        });
+
+        // Hide the menu if clicked outside of it or the menu icon
+        document.addEventListener('click', function (event) {
+            const notificationIcon = document.querySelector('.notification-icon');
+            const popupWindow = document.querySelector('.popup-window');
+
+            // Check if the click is outside the menu icon and the nav-links
+            if (!menuIcon.contains(event.target) && !navLinks.contains(event.target)) {
+                navLinks.classList.remove('show');
+                mainContent.classList.remove('hidden');
+            }
+
+            // Hide popup if clicked outside notification icon
+            if (!notificationIcon.contains(event.target)) {
+                popupWindow.style.display = 'none';
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        let dropdownTimeout;
+    
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                const dropdownMenu = this.nextElementSibling;
+                dropdownMenu.classList.toggle('show');
+    
+                // Clear any existing timeout when the dropdown is toggled
+                clearTimeout(dropdownTimeout);
+    
+                // Set a timeout to hide the dropdown after 5 seconds
+                dropdownTimeout = setTimeout(() => {
+                    dropdownMenu.classList.remove('show');
+                }, 4000); 
+            });
+        });
+    
+        // Hide the dropdown if clicked outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown')) {
+                dropdownToggles.forEach(toggle => {
+                    const dropdownMenu = toggle.nextElementSibling;
+                    dropdownMenu.classList.remove('show');
+                });
+            }
+        });
+    });
+    
+    </script>
+
+<!-- Script for scattering words in the word cloud -->
+<script>
+    function scatterWords() {
+        const words = document.querySelectorAll('.word-cloud span');
+        const margin = 20; // Set margin to prevent words from being too close
+        const maxAttempts = 100; // Maximum attempts to place a word without collision
+        
+        words.forEach(word => {
+            let x, y, attempts = 0;
+            let collision;
+
+            do {
+                x = Math.random() * (document.querySelector('.word-cloud').clientWidth - word.clientWidth - margin);
+                y = Math.random() * (document.querySelector('.word-cloud').clientHeight - word.clientHeight - margin);
+                word.style.left = `${x}px`;
+                word.style.top = `${y}px`;
+
+                collision = false;
+                words.forEach(otherWord => {
+                    if (otherWord !== word) {
+                        const otherRect = otherWord.getBoundingClientRect();
+                        const wordRect = word.getBoundingClientRect();
+                        
+                        if (
+                            wordRect.left < otherRect.right &&
+                            wordRect.right > otherRect.left &&
+                            wordRect.top < otherRect.bottom &&
+                            wordRect.bottom > otherRect.top
+                        ) {
+                            collision = true;
+                        }
+                    }
+                });
+
+                attempts++;
+            } while (collision && attempts < maxAttempts);
+        });
+    }
+
+    window.addEventListener('load', scatterWords);
+    window.addEventListener('resize', scatterWords); // Re-scatter words on window resize
+</script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
